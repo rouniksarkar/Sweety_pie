@@ -1,0 +1,25 @@
+<div class="woostify-contact-form">
+    <div class="row">
+        <div class="col-md-6">
+            <label>Name*</label>
+            [text* your-name placeholder "John Doe"]
+        </div>
+
+        <div class="col-md-6">
+            <label>Email*</label>
+            [email* your-email placeholder "your@email.com"]
+        </div>
+        <div class="col-md-12">
+            <label>Subject</label>
+            [text text-87 placeholder "This is an optional"]
+        </div>
+    </div>
+    <label>Message*</label>
+    [textarea* your-message placeholder "Hi! I’d like to ask about..."]
+    [submit class:button id:buton-contact "Submit"]
+</div>
+<style>
+#buton-contact {
+    border-radius: 5px;
+}
+</style>

@@ -1,0 +1,17 @@
+<div class="woostify-subscribe-form">
+[email your-email id:subscribe-input placeholder "hi@haute.woostify"]
+[submit id:subscribe-footer "Subscribe"]
+</div>
+<style>
+#subscribe-input {
+    border-radius: 5px;
+}
+#subscribe-footer {
+    background-color: #c54513;
+    color: #ffffff;
+    border-radius: 5px;
+    position: relative;
+    margin-top: 10px;
+    height: 40px;
+}
+</style>
