@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import RatingStars from "./RatingStars";
+import ProductCard from "./ProductCard";
 
 const ProductDetails = () => {
   const { slug } = useParams();
@@ -34,90 +35,109 @@ const ProductDetails = () => {
 
   useEffect(() => {
     if (!product?._id) return;
-
-    const getProductPageData = async () => {
+    const getRelatedProducts = async () => {
       try {
-        const [relatedResponse, reviewsResponse] = await Promise.all([
-          axios.get(`/api/v1/product/related-product/${product._id}/${product.category?._id}`),
-          axios.get(`/api/v1/products/${product._id}/reviews`),
-        ]);
-        setRelatedProducts(relatedResponse.data?.products || []);
-        setReviews(reviewsResponse.data || []);
+        const { data } = await axios.get(`/api/v1/product/related-product/${product._id}/${product.category?._id || product.category}`);
+        setRelatedProducts(data?.products || []);
       } catch (error) {
-        console.error("Unable to load product reviews:", error);
+        console.error("Unable to load related products:", error);
       }
     };
-
-    getProductPageData();
-  }, [product?._id, product?.category?._id]);
+    const getReviews = async () => {
+      try {
+        const { data } = await axios.get(`/api/v1/product/get-reviews/${product._id}`);
+        setReviews(data?.reviews || []);
+      } catch (error) {
+        console.error("Unable to load reviews:", error);
+      }
+    };
+    getRelatedProducts();
+    getReviews();
+  }, [product]);
 
   const submitReview = async (event) => {
     event.preventDefault();
+    if (rating === 0) {
+      setReviewError("Please choose a star rating.");
+      return;
+    }
     setReviewError("");
-
-    if (!auth?.token) {
-      setReviewError("Please sign in to leave a review.");
-      return;
-    }
-    if (!rating || !comment.trim()) {
-      setReviewError("Choose a rating and add a comment.");
-      return;
-    }
-
     setSubmittingReview(true);
     try {
-      await axios.post(
-        `/api/v1/products/${product._id}/reviews`,
-        { rating, comment: comment.trim() },
-        { headers: { Authorization: `Bearer ${auth.token}` }, withCredentials: true }
+      const { data } = await axios.post(
+        `/api/v1/product/add-review/${product._id}`,
+        { rating, comment },
+        { headers: { Authorization: `Bearer ${auth.token}` } }
       );
-
-      const [productResponse, reviewsResponse] = await Promise.all([
-        axios.get(`/api/v1/product/single-product/${slug}`),
-        axios.get(`/api/v1/products/${product._id}/reviews`),
-      ]);
-      setProduct(productResponse.data?.product || product);
-      setReviews(reviewsResponse.data || []);
+      setReviews(data.reviews);
       setRating(0);
       setComment("");
     } catch (error) {
-      setReviewError(error.response?.data?.message || "Unable to submit your review. Please try again.");
+      setReviewError(error.response?.data?.message || "Failed to submit review.");
     } finally {
       setSubmittingReview(false);
     }
   };
 
-  if (!product) return <div className="p-6">Loading...</div>;
+  if (!product) {
+    return (
+      <div className="flex h-96 items-center justify-center">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-300 border-t-blue-600" />
+      </div>
+    );
+  }
 
   const finalPrice = product.finalPrice ?? product.price;
   const hasDiscount = finalPrice < product.price;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      {/* Product Details Section */}
       <section className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        <img src={product.productImage} alt={product.name} className="h-80 w-full rounded-xl object-cover shadow-sm" />
+        <div className="relative pt-[75%] md:pt-[100%] overflow-hidden rounded-2xl bg-slate-50 border border-slate-100 shadow-sm">
+          <img
+            src={product.productImage}
+            alt={product.name}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </div>
 
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">{product.name}</h1>
-          <div className="mt-3">
-            <RatingStars rating={product.averageRating} count={product.ratingsCount} size="text-xl" />
+        <div className="flex flex-col justify-between py-2">
+          <div className="space-y-4">
+            <h1 className="text-3xl font-extrabold text-slate-900 sm:text-4xl">{product.name}</h1>
+            <div className="flex items-center gap-2">
+              <RatingStars rating={product.averageRating} count={product.ratingsCount} />
+              <span className="text-sm text-slate-500">({product.ratingsCount || 0} reviews)</span>
+            </div>
+
+            <div className="flex items-baseline gap-3 pt-2">
+              {hasDiscount ? (
+                <>
+                  <span className="text-2xl font-bold text-slate-900">₹{finalPrice}</span>
+                  <span className="text-lg text-slate-400 line-through">₹{product.price}</span>
+                  <span className="text-sm font-semibold text-red-500 bg-red-50 px-2 py-0.5 rounded">
+                    {product.discountType === "percentage" ? `${product.discountValue}% OFF` : `₹${product.discountValue} OFF`}
+                  </span>
+                </>
+              ) : (
+                <span className="text-2xl font-bold text-slate-900">₹{product.price}</span>
+              )}
+            </div>
+
+            <p className="text-slate-600 leading-relaxed pt-2">{product.description}</p>
           </div>
-          <p className="mt-4 text-slate-600">{product.description}</p>
-          <div className="mt-5 font-semibold">
-            {hasDiscount ? (
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-slate-400 line-through">₹{product.price}</span>
-                <span className="text-xl text-green-600">₹{finalPrice}</span>
-              </div>
-            ) : <span className="text-xl">₹{product.price}</span>}
-          </div>
-          <button onClick={() => addToCart(product._id, 1)} className="mt-6 rounded-lg bg-green-500 px-6 py-2 font-medium text-white hover:bg-green-600">
+
+          <button
+            onClick={() => addToCart(product._id, 1)}
+            className="mt-8 flex w-full items-center justify-center rounded-xl bg-blue-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-blue-500/20 hover:bg-blue-700 hover:shadow-blue-600/30 active:scale-[0.99] transition-all duration-200"
+          >
             Add to Cart
           </button>
         </div>
       </section>
 
-      <section className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-3">
+      {/* Review Section */}
+      <section className="mt-16 grid grid-cols-1 gap-8 lg:grid-cols-3 border-t border-slate-100 pt-12">
         <div className="lg:col-span-2">
           <div className="flex items-baseline justify-between border-b border-slate-200 pb-4">
             <h2 className="text-2xl font-bold text-slate-900">Customer reviews</h2>
@@ -158,17 +178,17 @@ const ProductDetails = () => {
         </form>
       </section>
 
-      <section className="mt-12">
-        <h2 className="mb-6 text-2xl font-bold text-slate-900">Similar products</h2>
+      {/* Similar Products Section */}
+      <section className="mt-16 border-t border-slate-100 pt-12">
+        <h2 className="mb-8 text-2xl font-extrabold text-slate-900 tracking-tight">Similar products</h2>
         {relatedProducts.length ? (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
             {relatedProducts.map((item) => (
-              <button key={item._id} onClick={() => navigate(`/product/${item.slug}`)} className="rounded-xl border border-slate-200 p-4 text-left shadow-sm transition hover:shadow-md">
-                <img src={item.productImage} alt={item.name} className="h-40 w-full rounded-lg object-cover" />
-                <h3 className="mt-3 text-lg font-bold text-slate-900">{item.name}</h3>
-                <div className="mt-1"><RatingStars rating={item.averageRating} count={item.ratingsCount} /></div>
-                <p className="mt-2 font-semibold">₹{item.finalPrice ?? item.price}</p>
-              </button>
+              <ProductCard
+                key={item._id}
+                product={item}
+                onAddToCart={(product) => addToCart(product._id, 1)}
+              />
             ))}
           </div>
         ) : <p className="text-slate-500">No similar products found.</p>}
