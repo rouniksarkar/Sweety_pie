@@ -6,11 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext.jsx';
 import Contact from '../../components/Contact.jsx'
 import { Link } from 'react-router-dom';
-import bannerImg from "../../../src/assets/Media/Banner Image.png"
-import immunityBanner from "../../../src/assets/Media/Immunity Boosters Banner.png"
-import protinBanner from "../../../src/assets/Media/Protein Supplement Banner.png"
 import Banner from '../../components/Banner.jsx';
 import BannerCarousel from '../../components/BannerCarousel.jsx';
+import RatingStars from '../../components/RatingStars.jsx';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -76,7 +74,7 @@ const Home = () => {
   return (
     <>
       <BannerCarousel/>
-      <Banner/>
+      {/* <Banner/> */}
       
       {/* <div className="py-7">
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-center list-none">
@@ -87,7 +85,7 @@ const Home = () => {
         </ul>
       </div> */}
 
-      <section className="my-12">
+      {/* <section className="my-12">
           <ul className="grid grid-cols-1 gap-6 text-center md:grid-cols-2 lg:grid-cols-4">
             <li className="flex flex-col items-center rounded-xl bg-gray-50 p-6 shadow-sm transition-shadow hover:shadow-lg">
               <svg
@@ -167,7 +165,7 @@ const Home = () => {
       <div className="max-w-300 mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 items-center gap-4 px-4 py-7">
           {/* Image Upload Box 1 */}
-          <div className="relative w-full h-48 rounded-lg shadow overflow-hidden">
+          {/* <div className="relative w-full h-48 rounded-lg shadow overflow-hidden">
             <label className="cursor-pointer w-full h-full">
               <input type="file" className="hidden" />
               <img
@@ -184,7 +182,7 @@ const Home = () => {
           </div>
 
           {/* Image Upload Box 2 */}
-          <div className="relative w-full h-48 rounded-lg shadow overflow-hidden">
+          {/* <div className="relative w-full h-48 rounded-lg shadow overflow-hidden">
             <label className="cursor-pointer w-full h-full">
               <input type="file" className="hidden" />
               <img
@@ -199,7 +197,7 @@ const Home = () => {
               </h2>
             </div>
           </div>
-        </div>
+        </div> */} 
 
         <div className='text-2xl text-center py-2'>New Arrivals</div>
 
@@ -261,6 +259,9 @@ const Home = () => {
                 />
                 <h3 className="text-lg font-bold">{p.name}</h3>
                 <p className="text-gray-600 line-clamp-2">{p.description}</p>
+                <div className="mt-2">
+                  <RatingStars rating={p.averageRating} count={p.ratingsCount} />
+                </div>
                 
                 //discount price
                 <p className="mt-2 font-semibold">
@@ -321,7 +322,7 @@ const Home = () => {
             </button>
           </div>
         )}
-      </div>
+      
 
       <Contact />
     </>

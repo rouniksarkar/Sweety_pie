@@ -45,7 +45,9 @@ const productSchema = new mongoose.Schema({
     },
     shipping:{
         type:Boolean,
-    }
+    },
+    averageRating: { type: Number, default: 0 },
+    ratingsCount: { type: Number, default: 0 },
 },
     { timestamps: true }
 )

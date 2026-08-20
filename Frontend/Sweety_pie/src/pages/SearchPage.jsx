@@ -1,4 +1,5 @@
 import React from "react";
+import RatingStars from "../components/RatingStars";
 import { useSearch } from "../context/Search";
 import { Link } from "react-router-dom"; // 👈 import Link
 
@@ -29,6 +30,9 @@ export default function SearchPage() {
               />
               <h3 className="text-lg font-bold">{p.name}</h3>
               <p className="text-gray-600">{p.description}</p>
+              <div className="mt-2">
+                <RatingStars rating={p.averageRating} count={p.ratingsCount} />
+              </div>
               <p className="mt-2 font-semibold">₹{p.price}</p>
               <button className="mt-3 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
                 Add to Cart

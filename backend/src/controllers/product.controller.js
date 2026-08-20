@@ -34,8 +34,8 @@ export const createProductController = async (req, res) => {
 
     // Upload image to Cloudinary
     let productImageUrl = "";
-    if (req.file?.path) {
-      const cloudinaryResult = await uploadOnCloudinary(req.file.path);
+    if (req.file?.buffer) {
+      const cloudinaryResult = await uploadOnCloudinary(req.file.buffer);
       if (!cloudinaryResult) {
         throw new apiError(500, "Image upload failed");
       }
@@ -57,6 +57,7 @@ export const createProductController = async (req, res) => {
     });
 
     res.status(201).json({
+      success: true,
       message: "Product created successfully",
       product: {
         ...newProduct._doc,
@@ -65,7 +66,9 @@ export const createProductController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    throw new apiError(500, "Error in product creation");
+    throw error instanceof apiError
+      ? error
+      : new apiError(500, "Error in product creation");
   }
 };
 
@@ -173,8 +176,8 @@ export const updateProductController = async (req, res) => {
 
     // Upload image if provided
     let productImageUrl;
-    if (req.file?.path) {
-      const cloudinaryResult = await uploadOnCloudinary(req.file.path);
+    if (req.file?.buffer) {
+      const cloudinaryResult = await uploadOnCloudinary(req.file.buffer);
       if (!cloudinaryResult) {
         throw new apiError(500, "Image upload failed");
       }

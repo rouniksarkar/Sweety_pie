@@ -62,6 +62,19 @@ app.use("/invoices", express.static(path.join(process.cwd(), "public/invoices"))
 import bannerRoutes from "./routes/banner.routes.js"
 app.use("/api/v1/banner",bannerRoutes)
 
+//review
+
+import reviewRoutes from "./routes/review.routes.js"
+
+app.use('/api/v1/products/:productId/reviews', reviewRoutes);
+
+import userReviewRoutes from "./routes/userReview.routes.js" 
+
+app.use('/api/v1/users/:userId/reviews', userReviewRoutes);
+ 
+// standalone routes: /api/reviews/:id
+app.use('/api/v1/reviews', reviewRoutes);
+
 //error handling
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

@@ -1,7 +1,6 @@
 import { Banner } from "../models/banner.model.js";
 import { apiError } from "../utils/apiError.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import fs from "fs";
 
 // Create Banner
 export const createBanner = async (req, res) => {
@@ -13,11 +12,8 @@ export const createBanner = async (req, res) => {
     }
 
     let BannerImageUrl = "";
-    if (req.file?.path) {
-      const cloudinaryResult = await uploadOnCloudinary(req.file.path);
-
-      // cleanup local file after upload
-      fs.unlinkSync(req.file.path);
+    if (req.file?.buffer) {
+      const cloudinaryResult = await uploadOnCloudinary(req.file.buffer);
 
       if (!cloudinaryResult) {
         throw new apiError(500, "Image upload failed");
@@ -64,11 +60,8 @@ export const updateBanner = async (req, res) => {
 
     const updateData = { title, subtitle, link };
 
-    if (req.file?.path) {
-      const cloudinaryResult = await uploadOnCloudinary(req.file.path);
-
-      // cleanup local file after upload
-      fs.unlinkSync(req.file.path);
+    if (req.file?.buffer) {
+      const cloudinaryResult = await uploadOnCloudinary(req.file.buffer);
 
       if (!cloudinaryResult) {
         throw new apiError(500, "Image upload failed");
