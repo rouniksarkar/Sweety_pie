@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -9,12 +8,11 @@ import {
   Image as BannerIcon,
   PlusCircle,
   Home,
-  Calendar
+  Calendar,
+  MessagesSquare
 } from 'lucide-react'
 
 const AdminLayout = ({ children, title, subtitle, onRefresh, refreshLoading }) => {
-  const [auth] = useAuth()
-  const adminName = auth?.user?.name || 'Admin'
   const location = useLocation()
 
   const isActive = (path) => location.pathname === path
@@ -111,6 +109,19 @@ const AdminLayout = ({ children, title, subtitle, onRefresh, refreshLoading }) =
             >
               <PlusCircle className="h-5 w-5" />
               <span>Add Banner</span>
+            </Link>
+
+            <Link
+              id="sidebar-contact-queries-link"
+              to="/admin/contact-queries"
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                isActive('/admin/contact-queries')
+                  ? 'bg-indigo-600 text-white font-medium shadow-md shadow-indigo-600/10'
+                  : 'text-slate-300 hover:bg-slate-800 hover:text-white hover:translate-x-1'
+              }`}
+            >
+              <MessagesSquare className="h-5 w-5" />
+              <span>Customer Queries</span>
             </Link>
           </nav>
         </div>

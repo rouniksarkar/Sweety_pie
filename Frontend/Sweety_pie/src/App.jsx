@@ -19,6 +19,7 @@ import PaymentButton from './pages/user/PaymentButton';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminBannerForm from './pages/admin/AdminBannerForm';
 import AdminBannerList from './pages/admin/AdminBannerList';
+import AdminContactQueries from './pages/admin/AdminContactQueries';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route path="/admin/product" element={<PrivateRoute><Product /></PrivateRoute>} />
             <Route path="/admin/bannerForm" element={<PrivateRoute><AdminBannerForm/></PrivateRoute>} />
             <Route path="/admin/bannerList" element={<PrivateRoute><AdminBannerList/></PrivateRoute>} />
+            <Route path="/admin/contact-queries" element={<PrivateRoute><AdminContactQueries/></PrivateRoute>} />
             <Route
               path="/dashboard/admin/update-product/:slug"
               element={<PrivateRoute><UpdateProduct/></PrivateRoute>}

@@ -75,6 +75,10 @@ app.use('/api/v1/users/:userId/reviews', userReviewRoutes);
 // standalone routes: /api/reviews/:id
 app.use('/api/v1/reviews', reviewRoutes);
 
+// Contact queries
+import contactRoutes from "./routes/contact.routes.js";
+app.use("/api/v1/contact", contactRoutes);
+
 //error handling
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
