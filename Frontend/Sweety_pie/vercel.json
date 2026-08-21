@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/v1/:path*",
+      "destination": "https://sweety-pie.onrender.com/api/v1/:path*"
+    },
+    {
+      "source": "/invoices/:path*",
+      "destination": "https://sweety-pie.onrender.com/invoices/:path*"
+    }
+  ]
+}
