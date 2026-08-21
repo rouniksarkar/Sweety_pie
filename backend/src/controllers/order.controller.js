@@ -16,8 +16,6 @@ export const createOrderController = async (req, res) => {
   try {
     const { items, totalAmount } = req.body;
 
-    console.log("📦 Create Order Request:", { items, totalAmount, user: req.user._id });
-
     if (!items || items.length === 0) {
       return res.status(400).json({ 
         success: false,
@@ -42,14 +40,6 @@ export const createOrderController = async (req, res) => {
           const discountedPrice = product.getDiscountedPrice ? product.getDiscountedPrice() : product.price;
           const discountAmount = originalPrice - discountedPrice;
 
-          console.log("📊 Product Pricing:", {
-            product: product.name,
-            originalPrice,
-            discountedPrice,
-            discountAmount,
-            quantity: item.quantity
-          });
-
           totalOriginalAmount += originalPrice * item.quantity;
           totalDiscount += discountAmount * item.quantity;
 
@@ -69,13 +59,6 @@ export const createOrderController = async (req, res) => {
       })
     );
 
-    console.log("💰 Order Totals:", {
-      totalOriginalAmount,
-      totalDiscount,
-      totalAmount,
-      itemsCount: populatedItems.length
-    });
-
     const order = await Order.create({
       user: req.user._id,
       items: populatedItems,
@@ -85,8 +68,6 @@ export const createOrderController = async (req, res) => {
       paymentStatus: "pending",
       invoiceUrl: null,
     });
-
-    console.log("✅ Order created successfully:", order._id);
 
     res.status(201).json({
       success: true,
@@ -120,8 +101,6 @@ export const createRazorpayOrderController = async (req, res) => {
     };
 
     const order = await razorpay.orders.create(options);
-
-    console.log("✅ Razorpay Order:", order);
 
     res.json({
       success: true,
@@ -195,15 +174,9 @@ export const verifyPaymentController = async (req, res) => {
 // View user orders
 export const getUserOrdersController = async (req, res) => {
   try {
-    console.log("🔑 Current User ID:", req.user._id);
-    console.log("🔑 User object:", req.user);
-    
     const orders = await Order.find({ user: req.user._id })
       .sort({ createdAt: -1 })
       .populate("items.productId", "name price productImage"); // ✅ Populate product details
-    
-    console.log("📦 Orders found:", orders.length);
-    console.log("📦 Orders details:", orders);
     
     res.json({
       success: true,

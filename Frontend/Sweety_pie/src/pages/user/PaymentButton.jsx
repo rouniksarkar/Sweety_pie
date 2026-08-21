@@ -3,6 +3,8 @@ import axios from "axios";
 import { useCart } from "../../context/CartContext.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
 
 const PaymentButton = () => {
   const { cart, clearCart } = useCart();
@@ -10,6 +12,7 @@ const PaymentButton = () => {
   const user = auth?.user;
   const token = auth?.token;
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // 🔹 Load Razorpay script dynamically
   const loadRazorpayScript = () => {
@@ -179,7 +182,7 @@ const PaymentButton = () => {
             if (res.data.success) {
               toast.success("Payment Successful! Order & Invoice Generated. 🎉");
               clearCart();
-              window.location.href = "/dashboard";
+              navigate("/dashboard");
             } else {
               toast.error("Payment verification failed");
             }

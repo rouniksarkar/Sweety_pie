@@ -14,10 +14,10 @@ const Footer = () => {
                   <path fillRule="evenodd" d="M10 2L3 7v11a1 1 0 001 1h3v-8h6v8h3a1 1 0 001-1V7l-7-5zM8 15v2h4v-2H8z" clipRule="evenodd" />
                 </svg>
               </div>
-              <span className="ml-3 text-2xl font-bold">MedCare</span>
+              <span className="ml-3 text-2xl font-bold">Sweety Pie</span>
             </div>
             <p className="text-gray-300 leading-relaxed">
-              Your trusted partner for quality medical equipment and supplies. Committed to healthcare excellence since 2008.
+              Bringing the authentic taste of Bengal to every celebration with freshly made sweets, savouries, and gift boxes.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
@@ -52,12 +52,12 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Categories</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Diagnostic Equipment</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Surgical Instruments</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Patient Monitoring</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Respiratory Care</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">First Aid</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Medical Supplies</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Bengali Sweets</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Rasgulla &amp; Rajbhog</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Sandesh</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Mishti Doi</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Namkeen &amp; Snacks</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Festival Gift Boxes</a></li>
             </ul>
           </div>
 
@@ -68,9 +68,9 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 text-blue-400 mt-0.5" />
                 <div className="text-gray-300">
-                  <p>123 Medical Plaza</p>
-                  <p>Healthcare District</p>
-                  <p>New York, NY 10001</p>
+                  <p>123 Sweet Street</p>
+                  <p>Park Street</p>
+                  <p>Kolkata, West Bengal 700016</p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
@@ -79,7 +79,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-blue-400" />
-                <span className="text-gray-300">info@medcare.com</span>
+                <span className="text-gray-300">hello@sweetypie.com</span>
               </div>
             </div>
             
@@ -105,7 +105,7 @@ const Footer = () => {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              © 2024 MedCare. All rights reserved.
+              © 2024 Sweety Pie. All rights reserved.
             </div>
             <div className="flex flex-wrap items-center space-x-6 text-sm text-gray-400">
               <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
@@ -116,7 +116,7 @@ const Footer = () => {
           </div>
           <div className="text-center mt-4 pt-4 border-t border-gray-800">
             <p className="text-gray-400 text-sm flex items-center justify-center">
-              Made with <Heart className="h-4 w-4 text-red-500 mx-1" /> for healthcare professionals
+              Made with <Heart className="h-4 w-4 text-red-500 mx-1" /> for sweet moments and celebrations
             </p>
           </div>
         </div>

@@ -25,7 +25,7 @@ const Navbar = () => {
               <path fillRule="evenodd" d="M10 2L3 7v11a1 1 0 001 1h3v-8h6v8h3a1 1 0 001-1V7l-7-5zM8 15v2h4v-2H8z" clipRule="evenodd" />
             </svg>
           </div>
-          <span className="text-xl font-black text-slate-900 tracking-tight">MedCare</span>
+          <span className="text-xl font-black text-slate-900 tracking-tight">Sweety Pie</span>
         </Link>
 
         {/* Search Input in Center */}

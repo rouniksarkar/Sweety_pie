@@ -12,7 +12,7 @@ router.post("/send-otp", (req, res) => {
   const otp = "123456"; // fixed OTP for testing
   otpStore[phone] = otp;
 
-  console.log(`OTP for ${phone}: ${otp}`); // for testing only
+
 
   res.json({ status: "success", message: "OTP sent (dummy)" });
 });
