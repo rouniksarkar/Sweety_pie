@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import AuthBackground from '../../components/AuthBackground';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const [auth, setAuth] = useAuth();
@@ -25,8 +26,9 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post('/api/v1/users/login', formData, {
-        withCredentials: true,
+      const res = await axios.post('/api/v1/users/login', {
+        email: formData.email,
+        password: formData.password,
       });
 
       console.log('Full login response:', res.data);
@@ -34,7 +36,7 @@ const Login = () => {
       const { user, accessToken } = res.data.data;
 
       if (!user || !accessToken) {
-        alert("Login failed: Missing user or token");
+        toast.error("Login failed: Missing user or token");
         return;
       }
 
@@ -43,7 +45,7 @@ const Login = () => {
       setAuth({ user, token });
       localStorage.setItem('auth', JSON.stringify({ user, token }));
 
-      alert(res.data.message || 'Login successful!');
+      toast.success(res.data.message || 'Login successful!');
       if (user?.role === 'admin') {
         navigate('/admin_dashboard');
       } else {
@@ -53,9 +55,9 @@ const Login = () => {
     } catch (error) {
       console.error('Login error:', error);
       if (error.response?.data?.message) {
-        alert(error.response.data.message);
+        toast.error(error.response.data.message);
       } else {
-        alert('Login failed. Please try again.');
+        toast.error('Login failed. Please try again.');
       }
     }
   };

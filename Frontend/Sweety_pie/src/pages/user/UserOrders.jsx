@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext.jsx";
+import toast from "react-hot-toast";
 
 const UserOrders = () => {
   const [auth] = useAuth();
@@ -58,12 +59,12 @@ const UserOrders = () => {
       );
 
       if (response.data.success) {
-        alert("Order cancelled successfully!");
+        toast.success("Order cancelled successfully!");
         fetchOrders(); // Refresh the orders list
       }
     } catch (error) {
       console.error("Cancel order error:", error);
-      alert(error.response?.data?.message || "Failed to cancel order");
+      toast.error(error.response?.data?.message || "Failed to cancel order");
     }
   };
 
@@ -254,7 +255,7 @@ const UserOrders = () => {
                           }
                         } catch (err) {
                           console.error("Invoice fetch error:", err);
-                          alert("Failed to generate invoice");
+                          toast.error("Failed to generate invoice");
                         }
                       }}
                       className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center gap-2"

@@ -20,10 +20,12 @@ import AdminOrders from './pages/admin/AdminOrders';
 import AdminBannerForm from './pages/admin/AdminBannerForm';
 import AdminBannerList from './pages/admin/AdminBannerList';
 import AdminContactQueries from './pages/admin/AdminContactQueries';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <AuthProvider> {/* ✅ Provide auth context globally */}
+        <Toaster />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

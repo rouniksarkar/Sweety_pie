@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import toast from 'react-hot-toast';
 import AdminLayout from '../../components/AdminLayout';
 import {
   ShoppingBag,
@@ -126,11 +127,11 @@ const UpdateProduct = () => {
       };
 
       await axios.put(`/api/v1/product/update-product/${product._id}`, productData, config);
-      alert("Product updated successfully! 🎉");
+      toast.success("Product updated successfully! 🎉");
       navigate('/admin/product');
     } catch (err) {
       console.error('❌ Error: Error in product update', err);
-      alert(err.response?.data?.message || "Failed to update product");
+      toast.error(err.response?.data?.message || "Failed to update product");
     } finally {
       setSubmitting(false);
     }

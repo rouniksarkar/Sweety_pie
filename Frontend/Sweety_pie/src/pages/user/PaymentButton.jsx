@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useCart } from "../../context/CartContext.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
+import toast from "react-hot-toast";
 
 const PaymentButton = () => {
   const { cart, clearCart } = useCart();
@@ -72,7 +73,7 @@ const PaymentButton = () => {
 
   const handlePayment = async () => {
     if (!cart?.items || cart.items.length === 0) {
-      alert("Your cart is empty!");
+      toast.error("Your cart is empty!");
       return;
     }
 
@@ -82,7 +83,7 @@ const PaymentButton = () => {
       // ✅ Ensure Razorpay script is loaded
       const isLoaded = await loadRazorpayScript();
       if (!isLoaded) {
-        alert("Razorpay SDK failed to load. Please check your internet connection.");
+        toast.error("Razorpay SDK failed to load. Please check your internet connection.");
         setLoading(false);
         return;
       }
@@ -91,7 +92,7 @@ const PaymentButton = () => {
       const formattedItems = formatCartItems();
 
       if (totalAmount <= 0) {
-        alert("Invalid total amount!");
+        toast.error("Invalid total amount!");
         setLoading(false);
         return;
       }
@@ -116,7 +117,7 @@ const PaymentButton = () => {
       );
 
       if (!orderResponse.success) {
-        alert("Order creation failed. Try again.");
+        toast.error("Order creation failed. Try again.");
         setLoading(false);
         return;
       }
@@ -140,7 +141,7 @@ const PaymentButton = () => {
 
       const razorpayOrderData = razorpayOrder?.order;
       if (!razorpayOrderData?.id) {
-        alert("Failed to create Razorpay order. Try again.");
+        toast.error("Failed to create Razorpay order. Try again.");
         setLoading(false);
         return;
       }
@@ -176,15 +177,15 @@ const PaymentButton = () => {
             );
 
             if (res.data.success) {
-              alert("✅ Payment Successful! Order & Invoice Generated.");
+              toast.success("Payment Successful! Order & Invoice Generated. 🎉");
               clearCart();
               window.location.href = "/dashboard";
             } else {
-              alert("❌ Payment verification failed");
+              toast.error("Payment verification failed");
             }
           } catch (err) {
             console.error("❌ Verification error:", err);
-            alert("Error verifying payment");
+            toast.error("Error verifying payment");
           }
         },
         theme: { color: "#3399cc" },
@@ -200,7 +201,7 @@ const PaymentButton = () => {
 
       const rzp = new window.Razorpay(options);
       rzp.on("payment.failed", function (response) {
-        alert(`❌ Payment failed: ${response.error.description}`);
+        toast.error(`Payment failed: ${response.error.description}`);
         setLoading(false);
       });
       rzp.on("close", function () {
@@ -210,7 +211,7 @@ const PaymentButton = () => {
       rzp.open();
     } catch (err) {
       console.error("❌ Payment error:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Error processing payment");
+      toast.error(err.response?.data?.message || "Error processing payment");
       setLoading(false);
     }
   };

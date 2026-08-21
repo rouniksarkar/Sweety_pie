@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import AdminLayout from '../../components/AdminLayout';
+import toast from 'react-hot-toast';
 import { FolderKanban, Plus, Edit2, Trash2, X, Check } from 'lucide-react';
 
 const Category = () => {
@@ -50,14 +51,15 @@ const Category = () => {
           config
         );
         if (data.success) {
+          toast.success("Category updated successfully! ✅");
           resetForm();
           getAllCategories();
         } else {
-          alert(data.message || 'Update failed');
+          toast.error(data.message || 'Update failed');
         }
       } catch (err) {
         console.error(err);
-        alert('Error updating category');
+        toast.error('Error updating category');
       } finally {
         setSubmitting(false);
       }
@@ -70,14 +72,15 @@ const Category = () => {
           config
         );
         if (data.success) {
+          toast.success("Category created successfully! 🎉");
           setName('');
           getAllCategories();
         } else {
-          alert(data.message || 'Creation failed');
+          toast.error(data.message || 'Creation failed');
         }
       } catch (err) {
         console.error(err);
-        alert('Error creating category');
+        toast.error('Error creating category');
       } finally {
         setSubmitting(false);
       }
@@ -95,13 +98,14 @@ const Category = () => {
         withCredentials: true
       });
       if (data.success) {
+        toast.success("Category deleted successfully! 🗑️");
         getAllCategories();
       } else {
-        alert('Delete failed');
+        toast.error('Delete failed');
       }
     } catch (err) {
       console.error(err);
-      alert('Error deleting category');
+      toast.error('Error deleting category');
     }
   };
 

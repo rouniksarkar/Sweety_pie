@@ -45,8 +45,8 @@ const ProductDetails = () => {
     };
     const getReviews = async () => {
       try {
-        const { data } = await axios.get(`/api/v1/product/get-reviews/${product._id}`);
-        setReviews(data?.reviews || []);
+        const { data } = await axios.get(`/api/v1/products/${product._id}/reviews`);
+        setReviews(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Unable to load reviews:", error);
       }
@@ -57,6 +57,10 @@ const ProductDetails = () => {
 
   const submitReview = async (event) => {
     event.preventDefault();
+    if (!auth?.token) {
+      setReviewError("Please log in to submit a review.");
+      return;
+    }
     if (rating === 0) {
       setReviewError("Please choose a star rating.");
       return;
@@ -65,11 +69,12 @@ const ProductDetails = () => {
     setSubmittingReview(true);
     try {
       const { data } = await axios.post(
-        `/api/v1/product/add-review/${product._id}`,
+        `/api/v1/products/${product._id}/reviews`,
         { rating, comment },
         { headers: { Authorization: `Bearer ${auth.token}` } }
       );
-      setReviews(data.reviews);
+      const { data: updatedReviews } = await axios.get(`/api/v1/products/${product._id}/reviews`);
+      setReviews(Array.isArray(updatedReviews) ? updatedReviews : [data, ...reviews]);
       setRating(0);
       setComment("");
     } catch (error) {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import AdminLayout from "../../components/AdminLayout";
 import {
   ShoppingBag,
@@ -105,7 +106,7 @@ const Product = () => {
       });
 
       if (data?.success) {
-        alert("Product Created Successfully!");
+        toast.success("Product Created Successfully! 🎉");
         setFormData({
           name: "",
           description: "",
@@ -120,11 +121,11 @@ const Product = () => {
         setImagePreview(null);
         getAllProducts();
       } else {
-        alert("Failed to create product");
+        toast.error("Failed to create product");
       }
     } catch (err) {
       console.error("Error creating product:", err);
-      alert(err.response?.data?.message || "Something went wrong");
+      toast.error(err.response?.data?.message || "Something went wrong");
     } finally {
       setSubmitting(false);
     }
@@ -140,11 +141,11 @@ const Product = () => {
         },
         withCredentials: true,
       });
-      alert("Deleted successfully!");
+      toast.success("Deleted successfully! 🗑️");
       getAllProducts();
     } catch (err) {
       console.error("Error deleting product:", err);
-      alert("Error deleting product");
+      toast.error("Error deleting product");
     }
   };
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const UserProfile = () => {
   const [username, setUsername] = useState("");
@@ -41,7 +42,7 @@ const handleUpdateProfile = async () => {
   try {
     // 🔹 Validate address (required)
     if (!street.trim() || !city.trim() || !state.trim() || !pin.trim()) {
-      alert("All address fields (street, city, state, pin) are required.");
+      toast.error("All address fields (street, city, state, pin) are required.");
       return;
     }
 
@@ -66,14 +67,14 @@ const handleUpdateProfile = async () => {
     );
 
     if (data.success) {
-      alert("Profile updated successfully");
+      toast.success("Profile updated successfully");
       setPassword("********"); // reset masking
     } else {
-      alert(data.message || "Error updating profile");
+      toast.error(data.message || "Error updating profile");
     }
   } catch (error) {
     console.error("Error updating profile", error);
-    alert("Error updating profile");
+    toast.error("Error updating profile");
   }
 };
 

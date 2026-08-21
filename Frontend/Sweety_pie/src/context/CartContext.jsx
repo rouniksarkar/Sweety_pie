@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const CartContext = createContext();
 
@@ -55,8 +56,10 @@ export const CartProvider = ({ children }) => {
         { withCredentials: true }
       );
       setCart(data.cart);
+      toast.success("Added to cart! 🛒");
     } catch (err) {
       console.error("Error adding to cart:", err);
+      toast.error("Failed to add to cart");
     }
   };
 

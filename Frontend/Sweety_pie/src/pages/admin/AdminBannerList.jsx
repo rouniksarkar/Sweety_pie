@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getBanners, deleteBanner } from "../../Routes/ServerBanner.js";
 import { useAuth } from "../../context/AuthContext";
 import AdminLayout from "../../components/AdminLayout";
+import toast from "react-hot-toast";
 import { Trash2, Link as LinkIcon, Image as ImageIcon, Sparkles } from "lucide-react";
 
 export default function AdminBannerList() {
@@ -28,11 +29,11 @@ export default function AdminBannerList() {
     if (window.confirm("Are you sure you want to delete this banner?")) {
       try {
         await deleteBanner(id, token);
-        alert("Banner deleted successfully! 🗑️");
+        toast.success("Banner deleted successfully! 🗑️");
         fetchBanners();
       } catch (err) {
         console.error(err);
-        alert("Failed to delete banner. Try again.");
+        toast.error("Failed to delete banner. Try again.");
       }
     }
   };

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button"; // shadcn button (optional)
 import { FileDown } from "lucide-react";
+import toast from "react-hot-toast";
 
 const InvoiceButton = ({ orderId }) => {
   const [loading, setLoading] = useState(false);
@@ -18,11 +19,11 @@ const InvoiceButton = ({ orderId }) => {
         // Open invoice PDF in new tab
         window.open(data.invoiceUrl, "_blank");
       } else {
-        alert("Invoice not available yet!");
+        toast.error("Invoice not available yet!");
       }
     } catch (error) {
       console.error("❌ Invoice download failed:", error);
-      alert("Failed to download invoice. Please try again later.");
+      toast.error("Failed to download invoice. Please try again later.");
     } finally {
       setLoading(false);
     }

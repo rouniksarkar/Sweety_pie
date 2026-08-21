@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { createBanner } from "../../Routes/ServerBanner.js";
 import { useAuth } from "../../context/AuthContext";
 import AdminLayout from "../../components/AdminLayout";
+import toast from "react-hot-toast";
 import { PlusCircle, Image as ImageIcon, Check, FileImage, Link as LinkIcon, Sparkles } from "lucide-react";
 
 export default function AdminBannerForm() {
@@ -28,7 +29,7 @@ export default function AdminBannerForm() {
     try {
       
       const res = await createBanner(formData, token);
-      alert("Banner created successfully! 🎉");
+      toast.success("Banner created successfully! 🎉");
       // Reset form
       setTitle("");
       setSubtitle("");
@@ -38,7 +39,7 @@ export default function AdminBannerForm() {
       console.log(res.data);
     } catch (error) {
       console.error(error);
-      alert("Failed to create banner");
+      toast.error("Failed to create banner");
     } finally {
       setSubmitting(false);
     }

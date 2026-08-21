@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import AdminLayout from "../../components/AdminLayout";
+import toast from "react-hot-toast";
 import {
   ShoppingCart,
   User,
@@ -44,14 +45,14 @@ const AdminOrders = () => {
         { withCredentials: true }
       );
       if (data.success) {
-        alert("Status updated successfully ✅");
+        toast.success("Status updated successfully ✅");
         fetchOrders();
       } else {
-        alert(data.message || "Update failed ❌");
+        toast.error(data.message || "Update failed ❌");
       }
     } catch (err) {
       console.error("Error updating order:", err);
-      alert("Error updating status");
+      toast.error("Error updating status");
     }
   };
 

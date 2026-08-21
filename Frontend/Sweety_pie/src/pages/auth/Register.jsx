@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AuthBackground from "../../components/AuthBackground";
+import toast from "react-hot-toast";
 
 export default function Register() {
   const [form, setForm] = useState({ username: "", email: "", password: "", role: "user" });
@@ -16,16 +17,16 @@ export default function Register() {
 
     try {
       await axios.post("/api/v1/users/register", form);
-      alert("Registration successful!");
+      toast.success("Registration successful! 🎉");
       navigate("/login");
     } catch (err) {
       const msg = err.response?.data?.message || "Registration failed";
 
       if (msg.toLowerCase().includes("already")) {
-        alert("User already exists, please login.");
+        toast.error("User already exists, please login.");
         navigate("/login");
       } else {
-        alert(msg);
+        toast.error(msg);
       }
     }
   };
